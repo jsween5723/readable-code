@@ -32,11 +32,11 @@ public class Cell {
     @Override
     public String toString() {
         if (isOpen) {
+            if (isLandMine) return LAND_MINE_MARK;
             if (landMineCount == 0) return OPENED_CELL_MARK;
             return landMineCount.toString();
         }
         if (isFlag) return FLAG_MARK;
-        if (isLandMine) return LAND_MINE_MARK;
         return CLOSED_CELL_MARK;
     }
 
