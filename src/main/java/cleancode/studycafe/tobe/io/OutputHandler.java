@@ -43,6 +43,7 @@ public class OutputHandler {
     }
 
     public void showPassOrderSummary(StudyCafePass selectedPass, StudyCafeLockerPass lockerPass) {
+        assert selectedPass != null && lockerPass != null;
         System.out.println();
         System.out.println("이용 내역");
         System.out.println("이용권: " + selectedPass);

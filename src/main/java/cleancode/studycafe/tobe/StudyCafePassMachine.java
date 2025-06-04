@@ -44,6 +44,7 @@ public class StudyCafePassMachine {
     }
 
     private void askForUsingLockerPass(StudyCafeLockerPass pass) {
+        assert pass != null;
         if (pass instanceof NothingLockerPass) return;
         outputHandler.askLockerPass(pass);
         if (inputHandler.getLockerSelection()) {
