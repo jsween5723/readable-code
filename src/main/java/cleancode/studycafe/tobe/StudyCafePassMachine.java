@@ -12,8 +12,11 @@ public class StudyCafePassMachine {
 
     private final InputHandler inputHandler = new InputHandler();
     private final OutputHandler outputHandler = new OutputHandler();
-    private final StudyCafeFileHandler studyCafeFileHandler = new StudyCafeFileHandler();
-    private final StudyCafePassRepository passRepository = StudyCafePassRepository.from(studyCafeFileHandler);
+    private final StudyCafePassRepository passRepository;
+
+    public StudyCafePassMachine(StudyCafePassRepository passRepository) {
+        this.passRepository = passRepository;
+    }
 
     public void run() {
         try {
