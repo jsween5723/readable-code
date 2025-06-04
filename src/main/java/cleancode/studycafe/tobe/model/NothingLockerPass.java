@@ -6,7 +6,7 @@ public class NothingLockerPass extends StudyCafeLockerPass {
     }
 
     @Override
-    public boolean isUse() {
+    public boolean isUsed() {
         return false;
     }
 }

@@ -5,7 +5,7 @@ public class StudyCafeLockerPass {
     private final StudyCafePassType passType;
     private final int duration;
     private final int price;
-    private boolean use;
+    private boolean used;
 
     protected StudyCafeLockerPass(StudyCafePassType passType, int duration, int price) {
         this.passType = passType;
@@ -22,15 +22,15 @@ public class StudyCafeLockerPass {
     }
 
     public int getPrice() {
-        return use ? price : 0;
+        return used ? price : 0;
     }
 
     public void use() {
-        use = true;
+        used = true;
     }
 
-    public boolean isUse() {
-        return use;
+    public boolean isUsed() {
+        return used;
     }
 
     public boolean isCompatible(StudyCafePass pass) {

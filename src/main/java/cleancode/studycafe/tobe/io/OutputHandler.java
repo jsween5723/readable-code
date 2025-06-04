@@ -46,7 +46,7 @@ public class OutputHandler {
         System.out.println();
         System.out.println("이용 내역");
         System.out.println("이용권: " + selectedPass);
-        if (lockerPass.isUse()) {
+        if (lockerPass.isUsed()) {
             System.out.println("사물함: " + lockerPass);
         }
         int totalPrice = selectedPass.getTotalPrice() + lockerPass.getPrice();
