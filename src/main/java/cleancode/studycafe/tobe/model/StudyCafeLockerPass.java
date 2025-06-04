@@ -30,8 +30,9 @@ public class StudyCafeLockerPass {
     }
 
     public int getPrice() {
-        return price;
+        return use ? price : 0;
     }
+
     public void use() {
         use = true;
     }

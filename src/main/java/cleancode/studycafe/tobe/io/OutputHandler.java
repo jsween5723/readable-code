@@ -49,14 +49,7 @@ public class OutputHandler {
         if (lockerPass.isUse()) {
             System.out.println("사물함: " + lockerPass);
         }
-
-        double discountRate = selectedPass.getDiscountRate();
-        int discountPrice = (int) (selectedPass.getPrice() * discountRate);
-        if (discountPrice > 0) {
-            System.out.println("이벤트 할인 금액: " + discountPrice + "원");
-        }
-
-        int totalPrice = selectedPass.getPrice() - discountPrice + (lockerPass.isUse() ? lockerPass.getPrice() : 0);
+        int totalPrice = selectedPass.getTotalPrice() + lockerPass.getPrice();
         System.out.println("총 결제 금액: " + totalPrice + "원");
         System.out.println();
     }
