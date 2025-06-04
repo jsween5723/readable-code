@@ -9,8 +9,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class StudyCafeFileHandler {
 
@@ -21,26 +19,23 @@ public class StudyCafeFileHandler {
             List<StudyCafePass> studyCafePasses = new ArrayList<>();
             for (String line : lines) {
                 String[] values = line.split(",");
-                studyCafePasses.add(toStudyCafePass(values));
+                StudyCafePassType studyCafePassType = StudyCafePassType.valueOf(values[0]);
+                int duration = Integer.parseInt(values[1]);
+                int price = Integer.parseInt(values[2]);
+                double discountRate = Double.parseDouble(values[3]);
+                var pass = switch (studyCafePassType) {
+                    case HOURLY -> StudyCafePass.hourlyOf(duration, price, discountRate);
+                    case WEEKLY -> StudyCafePass.weeklyOf(duration, price, discountRate);
+                    case FIXED ->
+                            StudyCafePass.fixedOf(duration, price, discountRate, lockerPasses.stream().filter((lockerPass -> lockerPass.isCompatible(duration))).findFirst().orElse(null));
+                };
+                studyCafePasses.add(pass);
             }
 
             return studyCafePasses;
         } catch (IOException e) {
             throw new RuntimeException("파일을 읽는데 실패했습니다.", e);
         }
-    }
-
-    private StudyCafePass toStudyCafePass(String[] values) {
-        StudyCafePassType studyCafePassType = StudyCafePassType.valueOf(values[0]);
-        int duration = Integer.parseInt(values[1]);
-        int price = Integer.parseInt(values[2]);
-        double discountRate = Double.parseDouble(values[3]);
-        return switch (studyCafePassType) {
-            case HOURLY -> StudyCafePass.hourlyOf(duration, price, discountRate);
-            case WEEKLY -> StudyCafePass.weeklyOf(duration, price, discountRate);
-            case FIXED ->
-                    StudyCafePass.fixedOf(duration, price, discountRate, readLockerPasses().stream().findFirst().orElse(null));
-        };
     }
 
     private List<StudyCafeLockerPass> readLockerPasses() {

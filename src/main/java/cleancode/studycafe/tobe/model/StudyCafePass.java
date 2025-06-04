@@ -30,10 +30,6 @@ public abstract class StudyCafePass {
         return passType;
     }
 
-    public int getDuration() {
-        return duration;
-    }
-
     public int getTotalPrice() {
         int discountPrice = (int) (price * discountRate);
         if (discountPrice > 0) {
@@ -46,8 +42,7 @@ public abstract class StudyCafePass {
         return passType.toMenuString(duration, price);
     }
 
-
-    //    3 케이스중 1개만 override하므로 선정의 후 override
+    //    3 케이스중 1개만 override 하므로 선정의 후 override
     public boolean isLockerSelected() {
         return false;
     }

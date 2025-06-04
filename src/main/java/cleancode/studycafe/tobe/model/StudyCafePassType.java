@@ -16,7 +16,7 @@ public enum StudyCafePassType {
         this.toMenu = calculator;
     }
 
-    public String toMenuString(Integer duration, Integer price) {
+    String toMenuString(Integer duration, Integer price) {
         return toMenu.apply(duration, price);
     }
 }

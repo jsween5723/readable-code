@@ -6,7 +6,7 @@ public class StudyCafeLockerPass {
     private final int price;
     private boolean selected;
 
-    protected StudyCafeLockerPass(int duration, int price) {
+    private StudyCafeLockerPass(int duration, int price) {
         this.duration = duration;
         this.price = price;
     }
@@ -15,23 +15,23 @@ public class StudyCafeLockerPass {
         return new StudyCafeLockerPass(duration, price);
     }
 
-    public int getPrice() {
+    int getPrice() {
         return selected ? price : 0;
     }
 
-    public void select() {
+    public boolean isCompatible(int passDuration) {
+        return duration == passDuration;
+    }
+
+    void select() {
         selected = true;
     }
 
-    public boolean isSelected() {
+    boolean isSelected() {
         return selected;
     }
 
-    public boolean isCompatible(StudyCafePass pass) {
-        return duration == pass.getDuration();
-    }
-
-    public String toMenuString() {
+    String toMenuString() {
         return StudyCafePassType.FIXED.toMenuString(duration, price);
     }
 }
