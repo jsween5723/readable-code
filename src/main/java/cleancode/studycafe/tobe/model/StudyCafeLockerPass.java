@@ -5,6 +5,7 @@ public class StudyCafeLockerPass {
     private final StudyCafePassType passType;
     private final int duration;
     private final int price;
+    private boolean use;
 
     private StudyCafeLockerPass(StudyCafePassType passType, int duration, int price) {
         this.passType = passType;
@@ -26,6 +27,13 @@ public class StudyCafeLockerPass {
 
     public int getPrice() {
         return price;
+    }
+    public void use() {
+        use = true;
+    }
+
+    public boolean isUse() {
+        return use;
     }
 
     @Override

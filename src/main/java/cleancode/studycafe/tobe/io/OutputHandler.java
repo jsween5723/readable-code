@@ -34,8 +34,8 @@ public class OutputHandler {
     public void askLockerPass(StudyCafeLockerPass lockerPass) {
         System.out.println();
         String askMessage = String.format(
-            "사물함을 이용하시겠습니까? (%s)",
-            lockerPass
+                "사물함을 이용하시겠습니까? (%s)",
+                lockerPass
         );
 
         System.out.println(askMessage);
@@ -46,7 +46,7 @@ public class OutputHandler {
         System.out.println();
         System.out.println("이용 내역");
         System.out.println("이용권: " + selectedPass);
-        if (lockerPass != null) {
+        if (lockerPass != null && lockerPass.isUse()) {
             System.out.println("사물함: " + lockerPass);
         }
 
@@ -56,7 +56,7 @@ public class OutputHandler {
             System.out.println("이벤트 할인 금액: " + discountPrice + "원");
         }
 
-        int totalPrice = selectedPass.getPrice() - discountPrice + (lockerPass != null ? lockerPass.getPrice() : 0);
+        int totalPrice = selectedPass.getPrice() - discountPrice + (lockerPass != null && lockerPass.isUse() ? lockerPass.getPrice() : 0);
         System.out.println("총 결제 금액: " + totalPrice + "원");
         System.out.println();
     }
