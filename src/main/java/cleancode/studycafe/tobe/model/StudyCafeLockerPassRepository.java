@@ -12,14 +12,14 @@ public class StudyCafeLockerPassRepository {
     }
 
     public StudyCafeLockerPass findOneBy(StudyCafePass selectedPass) {
-        if (selectedPass.getPassType() != StudyCafePassType.FIXED) return null;
+        if (selectedPass.getPassType() != StudyCafePassType.FIXED) return StudyCafeLockerPass.ofNothing();
         return passes.stream()
                 .filter(option ->
                         option.getPassType() == selectedPass.getPassType()
                                 && option.getDuration() == selectedPass.getDuration()
                 )
                 .findFirst()
-                .orElse(null);
+                .orElse(StudyCafeLockerPass.ofNothing());
     }
 
     public static StudyCafeLockerPassRepository from(StudyCafeFileHandler studyCafeFileHandler) {

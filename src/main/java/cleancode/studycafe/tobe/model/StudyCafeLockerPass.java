@@ -7,7 +7,7 @@ public class StudyCafeLockerPass {
     private final int price;
     private boolean use;
 
-    private StudyCafeLockerPass(StudyCafePassType passType, int duration, int price) {
+    protected StudyCafeLockerPass(StudyCafePassType passType, int duration, int price) {
         this.passType = passType;
         this.duration = duration;
         this.price = price;
@@ -15,6 +15,10 @@ public class StudyCafeLockerPass {
 
     public static StudyCafeLockerPass of(StudyCafePassType passType, int duration, int price) {
         return new StudyCafeLockerPass(passType, duration, price);
+    }
+
+    public static StudyCafeLockerPass ofNothing() {
+        return new NothingLockerPass();
     }
 
     public StudyCafePassType getPassType() {
