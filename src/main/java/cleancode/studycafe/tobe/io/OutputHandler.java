@@ -27,30 +27,30 @@ public class OutputHandler {
         System.out.println("이용권 목록");
         for (int index = 0; index < passes.size(); index++) {
             StudyCafePass pass = passes.get(index);
-            System.out.println(String.format("%s. ", index + 1) + pass);
+            System.out.println(String.format("%s. ", index + 1) + pass.getMenuString());
         }
     }
 
-    public void askLockerPass(StudyCafeLockerPass lockerPass) {
+    public void askLockerPass(StudyCafePass pass) {
         System.out.println();
         String askMessage = String.format(
                 "사물함을 이용하시겠습니까? (%s)",
-                lockerPass
+                pass.getLockerMenuString()
         );
 
         System.out.println(askMessage);
         System.out.println("1. 예 | 2. 아니오");
     }
 
-    public void showPassOrderSummary(StudyCafePass selectedPass, StudyCafeLockerPass lockerPass) {
-        assert selectedPass != null && lockerPass != null;
+    public void showPassOrderSummary(StudyCafePass selectedPass) {
+        assert selectedPass != null;
         System.out.println();
         System.out.println("이용 내역");
-        System.out.println("이용권: " + selectedPass);
-        if (lockerPass.isUsed()) {
-            System.out.println("사물함: " + lockerPass);
+        System.out.println("이용권: " + selectedPass.getMenuString());
+        if (selectedPass.isLockerSelected()) {
+            System.out.println("사물함: " + selectedPass.getLockerMenuString());
         }
-        int totalPrice = selectedPass.getTotalPrice() + lockerPass.getPrice();
+        int totalPrice = selectedPass.getTotalPrice();
         System.out.println("총 결제 금액: " + totalPrice + "원");
         System.out.println();
     }

@@ -9,22 +9,19 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class StudyCafeFileHandler {
 
     public List<StudyCafePass> readStudyCafePasses() {
+        List<StudyCafeLockerPass> lockerPasses = readLockerPasses();
         try {
             List<String> lines = Files.readAllLines(Paths.get("src/main/resources/cleancode/studycafe/pass-list.csv"));
             List<StudyCafePass> studyCafePasses = new ArrayList<>();
             for (String line : lines) {
                 String[] values = line.split(",");
-                StudyCafePassType studyCafePassType = StudyCafePassType.valueOf(values[0]);
-                int duration = Integer.parseInt(values[1]);
-                int price = Integer.parseInt(values[2]);
-                double discountRate = Double.parseDouble(values[3]);
-
-                StudyCafePass studyCafePass = StudyCafePass.of(studyCafePassType, duration, price, discountRate);
-                studyCafePasses.add(studyCafePass);
+                studyCafePasses.add(toStudyCafePass(values));
             }
 
             return studyCafePasses;
@@ -33,17 +30,29 @@ public class StudyCafeFileHandler {
         }
     }
 
-    public List<StudyCafeLockerPass> readLockerPasses() {
+    private StudyCafePass toStudyCafePass(String[] values) {
+        StudyCafePassType studyCafePassType = StudyCafePassType.valueOf(values[0]);
+        int duration = Integer.parseInt(values[1]);
+        int price = Integer.parseInt(values[2]);
+        double discountRate = Double.parseDouble(values[3]);
+        return switch (studyCafePassType) {
+            case HOURLY -> StudyCafePass.hourlyOf(duration, price, discountRate);
+            case WEEKLY -> StudyCafePass.weeklyOf(duration, price, discountRate);
+            case FIXED ->
+                    StudyCafePass.fixedOf(duration, price, discountRate, readLockerPasses().stream().findFirst().orElse(null));
+        };
+    }
+
+    private List<StudyCafeLockerPass> readLockerPasses() {
         try {
             List<String> lines = Files.readAllLines(Paths.get("src/main/resources/cleancode/studycafe/locker.csv"));
             List<StudyCafeLockerPass> lockerPasses = new ArrayList<>();
             for (String line : lines) {
                 String[] values = line.split(",");
-                StudyCafePassType studyCafePassType = StudyCafePassType.valueOf(values[0]);
                 int duration = Integer.parseInt(values[1]);
                 int price = Integer.parseInt(values[2]);
 
-                StudyCafeLockerPass lockerPass = StudyCafeLockerPass.of(studyCafePassType, duration, price);
+                StudyCafeLockerPass lockerPass = StudyCafeLockerPass.of(duration, price);
                 lockerPasses.add(lockerPass);
             }
 

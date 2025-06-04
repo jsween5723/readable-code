@@ -2,44 +2,36 @@ package cleancode.studycafe.tobe.model;
 
 public class StudyCafeLockerPass {
 
-    private final StudyCafePassType passType;
     private final int duration;
     private final int price;
-    private boolean used;
+    private boolean selected;
 
-    protected StudyCafeLockerPass(StudyCafePassType passType, int duration, int price) {
-        this.passType = passType;
+    protected StudyCafeLockerPass(int duration, int price) {
         this.duration = duration;
         this.price = price;
     }
 
-    public static StudyCafeLockerPass of(StudyCafePassType passType, int duration, int price) {
-        return new StudyCafeLockerPass(passType, duration, price);
-    }
-
-    public static StudyCafeLockerPass ofNothing() {
-        return new NothingLockerPass();
+    public static StudyCafeLockerPass of(int duration, int price) {
+        return new StudyCafeLockerPass(duration, price);
     }
 
     public int getPrice() {
-        return used ? price : 0;
+        return selected ? price : 0;
     }
 
-    public void use() {
-        used = true;
+    public void select() {
+        selected = true;
     }
 
-    public boolean isUsed() {
-        return used;
+    public boolean isSelected() {
+        return selected;
     }
 
     public boolean isCompatible(StudyCafePass pass) {
-        return passType == pass.getPassType()
-                && duration == pass.getDuration();
+        return duration == pass.getDuration();
     }
 
-    @Override
-    public String toString() {
-        return passType.toMenuString(duration, price);
+    public String toMenuString() {
+        return StudyCafePassType.FIXED.toMenuString(duration, price);
     }
 }

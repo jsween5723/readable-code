@@ -14,7 +14,6 @@ public class StudyCafePassMachine {
     private final OutputHandler outputHandler = new OutputHandler();
     private final StudyCafeFileHandler studyCafeFileHandler = new StudyCafeFileHandler();
     private final StudyCafePassRepository passRepository = StudyCafePassRepository.from(studyCafeFileHandler);
-    private final StudyCafeLockerPassRepository lockerPassRepository = StudyCafeLockerPassRepository.from(studyCafeFileHandler);
 
     public void run() {
         try {
@@ -31,11 +30,10 @@ public class StudyCafePassMachine {
             StudyCafePass selectedPass = inputHandler.getSelectPass(hourlyPasses);
 
             //사물함 이용
-            StudyCafeLockerPass lockerPass = lockerPassRepository.findOneBy(selectedPass);
-            askForUsingLockerPass(lockerPass);
+            askForUsingLockerPass(selectedPass);
 
             //금액 출력
-            outputHandler.showPassOrderSummary(selectedPass, lockerPass);
+            outputHandler.showPassOrderSummary(selectedPass);
         } catch (AppException e) {
             outputHandler.showSimpleMessage(e.getMessage());
         } catch (Exception e) {
@@ -43,12 +41,12 @@ public class StudyCafePassMachine {
         }
     }
 
-    private void askForUsingLockerPass(StudyCafeLockerPass pass) {
+    private void askForUsingLockerPass(StudyCafePass pass) {
         assert pass != null;
-        if (pass instanceof NothingLockerPass) return;
+        if (pass.isNotUsingLocker()) return;
         outputHandler.askLockerPass(pass);
         if (inputHandler.getLockerSelection()) {
-            pass.use();
+            pass.selectLocker();
         }
     }
 }
