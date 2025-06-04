@@ -34,7 +34,8 @@ public class StudyCafePass {
         return discountRate;
     }
 
-    public String display() {
+    @Override
+    public String toString() {
         if (passType == StudyCafePassType.HOURLY) {
             return String.format("%s시간권 - %d원", duration, price);
         }
@@ -46,5 +47,4 @@ public class StudyCafePass {
         }
         return "";
     }
-
 }
