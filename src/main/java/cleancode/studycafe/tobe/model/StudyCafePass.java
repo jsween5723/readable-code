@@ -26,14 +26,6 @@ public class StudyCafePass {
         return duration;
     }
 
-    public int getPrice() {
-        return price;
-    }
-
-    public double getDiscountRate() {
-        return discountRate;
-    }
-
     public int getTotalPrice() {
         int discountPrice = (int) (price * discountRate);
         if (discountPrice > 0) {

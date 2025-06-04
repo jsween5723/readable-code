@@ -14,10 +14,7 @@ public class StudyCafeLockerPassRepository {
     public StudyCafeLockerPass findOneBy(StudyCafePass selectedPass) {
         if (selectedPass.getPassType() != StudyCafePassType.FIXED) return StudyCafeLockerPass.ofNothing();
         return passes.stream()
-                .filter(option ->
-                        option.getPassType() == selectedPass.getPassType()
-                                && option.getDuration() == selectedPass.getDuration()
-                )
+                .filter(option -> option.isCompatible(selectedPass))
                 .findFirst()
                 .orElse(StudyCafeLockerPass.ofNothing());
     }

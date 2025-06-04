@@ -21,14 +21,6 @@ public class StudyCafeLockerPass {
         return new NothingLockerPass();
     }
 
-    public StudyCafePassType getPassType() {
-        return passType;
-    }
-
-    public int getDuration() {
-        return duration;
-    }
-
     public int getPrice() {
         return use ? price : 0;
     }
@@ -39,6 +31,11 @@ public class StudyCafeLockerPass {
 
     public boolean isUse() {
         return use;
+    }
+
+    public boolean isCompatible(StudyCafePass pass) {
+        return passType == pass.getPassType()
+                && duration == pass.getDuration();
     }
 
     @Override
