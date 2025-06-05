@@ -11,8 +11,14 @@ public class StudyCafeLockerPass {
         this.price = price;
     }
 
-    public static StudyCafeLockerPass of(int duration, int price) {
+    private static StudyCafeLockerPass of(int duration, int price) {
         return new StudyCafeLockerPass(duration, price);
+    }
+
+    public static StudyCafeLockerPass fromValues(String[] values) {
+        int duration = Integer.parseInt(values[1]);
+        int price = Integer.parseInt(values[2]);
+        return StudyCafeLockerPass.of(duration, price);
     }
 
     int getPrice() {

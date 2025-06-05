@@ -14,16 +14,29 @@ public abstract class StudyCafePass {
         this.discountRate = discountRate;
     }
 
-    public static StudyCafePass weeklyOf(int duration, int price, double discountRate) {
+    private static StudyCafePass weeklyOf(int duration, int price, double discountRate) {
         return new WeeklyStudyCafePass(duration, price, discountRate);
     }
 
-    public static StudyCafePass hourlyOf(int duration, int price, double discountRate) {
+    private static StudyCafePass hourlyOf(int duration, int price, double discountRate) {
         return new HourlyStudyCafePass(duration, price, discountRate);
     }
 
-    public static StudyCafePass fixedOf(int duration, int price, double discountRate, StudyCafeLockerPass lockerPass) {
+    private static StudyCafePass fixedOf(int duration, int price, double discountRate, StudyCafeLockerPass lockerPass) {
         return new FixedStudyCafePass(duration, price, discountRate, lockerPass);
+    }
+
+    public static StudyCafePass of(String[] values, StudyCafeLockerPass lockerPass) {
+        StudyCafePassType studyCafePassType = StudyCafePassType.valueOf(values[0]);
+        int duration = Integer.parseInt(values[1]);
+        int price = Integer.parseInt(values[2]);
+        double discountRate = Double.parseDouble(values[3]);
+        return switch (studyCafePassType) {
+            case HOURLY -> hourlyOf(duration, price, discountRate);
+            case WEEKLY -> weeklyOf(duration, price, discountRate);
+            case FIXED ->
+                    fixedOf(duration, price, discountRate, lockerPass);
+        };
     }
 
     public StudyCafePassType getPassType() {
