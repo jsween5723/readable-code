@@ -75,7 +75,6 @@ class NormalCellTest {
             NormalCell normalCell = new NormalCell();
             normalCell.open();
             //when
-            normalCell.toggleFlag();
             //then
             assertThatThrownBy(normalCell::toggleFlag).isInstanceOf(IllegalStateException.class);
         }
@@ -123,6 +122,42 @@ class NormalCellTest {
             //when
             //then
             assertThat(normalCell.canAutoOpen()).isTrue();
+        }
+    }
+
+    @Nested
+    @DisplayName("셀 게임 완료 가능 여부 테스트")
+    class is_cleared{
+        @Test
+        @DisplayName("열린 상태일 경우 완료 가능 여부가 참이다.")
+        void notCleared() {
+            //given
+            NormalCell normalCell = new NormalCell();
+            //when
+            normalCell.open();
+            //then
+            assertThat(normalCell.isCleared()).isTrue();
+        }
+
+        @Test
+        @DisplayName("닫힌 상태일 경우 완료 가능 여부가 거짓이다.")
+        void notCleared2() {
+            //given
+            NormalCell normalCell = new NormalCell();
+            //when
+            //then
+            assertThat(normalCell.isCleared()).isFalse();
+        }
+
+        @Test
+        @DisplayName("플래그가 달린 상태일 경우 완료 가능 여부가 거짓이다.")
+        void notCleared3() {
+            //given
+            NormalCell normalCell = new NormalCell();
+            //when
+            normalCell.toggleFlag();
+            //then
+            assertThat(normalCell.isCleared()).isFalse();
         }
     }
 

@@ -11,4 +11,5 @@ public abstract class Cell {
 
     abstract boolean isOpened();
     abstract boolean isFlagged();
+    abstract boolean isCleared();
 }
