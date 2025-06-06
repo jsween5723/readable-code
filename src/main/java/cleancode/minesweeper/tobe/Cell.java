@@ -10,6 +10,8 @@ public abstract class Cell {
     abstract boolean canAutoOpen();
 
     abstract boolean isOpened();
+
     abstract boolean isFlagged();
+
     abstract boolean isCleared();
 }
