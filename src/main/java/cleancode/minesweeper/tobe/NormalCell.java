@@ -1,44 +1,43 @@
 package cleancode.minesweeper.tobe;
 
+/**
+ * 1. 일반 셀은 열렸을 때 주변에 지뢰개수를 표시해야한다.
+ * 2. 일반 셀은 주변 지뢰가 없을 경우 열린상태를 표시해야한다.
+ * 3. 일반 셀의 주변 지뢰가 없고 열린 상태가 아니고 깃발이 꽂힌 상태가 아닐 경우 주변 셀을 열 수 있다.
+ * 4. 일반 셀의 클리어조건은 열린상태이다.
+ * 5. 일반 셀은 지뢰가 아니다.
+ */
 public class NormalCell extends Cell {
-    private boolean opened = false;
-    private boolean flagged = false;
+    public static final String NORMAL_CELL_OPENED_SIGN = "■";
+    private final int aroundMineCount;
 
-    @Override
-    void open() {
-        if (opened) throw new IllegalStateException("이미 열린 셀은 열 수 없습니다.");
-        if (flagged) throw new IllegalStateException("플래그가 달린 셀은 열 수 없습니다.");
-        opened = true;
+    public NormalCell(int aroundMineCount) {
+        this.aroundMineCount = aroundMineCount;
     }
 
     @Override
-    void toggleFlag() {
-        if (opened) throw new IllegalStateException("열린 셀은 플래그를 달 수 없습니다.");
-        flagged = !flagged;
-    }
-
-    @Override
-    boolean isLandMine() {
+    public boolean isLandMine() {
         return false;
     }
 
     @Override
-    boolean canAutoOpen() {
-        return !opened && !flagged;
+    public boolean canAutoOpenAroundThis() {
+        return aroundMineCount == 0 && !isOpened() && !isFlagged();
     }
 
     @Override
-    boolean isOpened() {
-        return opened;
+    public boolean isCleared() {
+        return isOpened();
     }
 
     @Override
-    boolean isFlagged() {
-        return flagged;
-    }
-
-    @Override
-    boolean isCleared() {
-        return opened && !flagged;
+    public String toString() {
+        if (isOpened()) {
+            if (aroundMineCount == 0) {
+                return NORMAL_CELL_OPENED_SIGN;
+            }
+            return String.valueOf(aroundMineCount);
+        }
+        return super.toString();
     }
 }
