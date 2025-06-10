@@ -56,6 +56,9 @@ public class Board {
 
     public void open(Coordinate coordinate) {
         Cell cell = get(coordinate);
+        if (cell.cantOpen()) {
+            return;
+        }
         if (cell.isLandMine()) {
             openAllCells();
         } else {
@@ -67,6 +70,11 @@ public class Board {
         get(coordinate).toggleFlag();
     }
 
+    public void validateCoordinates(Coordinate coordinate) {
+        if (config.isNotOver(coordinate)) return;
+        throw new IllegalArgumentException("잘못된 번호를 선택하셨습니다.");
+    }
+
     private void openAllCells() {
         Arrays.stream(cells).flatMap(Arrays::stream).forEach(Cell::open);
     }
@@ -76,13 +84,13 @@ public class Board {
         Deque<Coordinate> targets = new ArrayDeque<>();
         targets.push(firstTarget);
         while (!targets.isEmpty()) {
-            Coordinate coordinate = targets.pop();
+            Coordinate coordinate = targets.poll();
             get(coordinate).open();
             if (cantAutoOpenAround(coordinate)) {
-                return;
+                continue;
             }
             for (int[] delta : DELTAS) {
-                Coordinate targetCoordinate = new Coordinate(firstTarget.row() + delta[0], firstTarget.column() + delta[1]);
+                Coordinate targetCoordinate = new Coordinate(coordinate.row() + delta[0], coordinate.column() + delta[1]);
                 if (isNotOver(targetCoordinate)) {
                     Cell cell = get(targetCoordinate);
                     if (cell.cantAutoOpen()) {
@@ -99,7 +107,7 @@ public class Board {
     }
 
     boolean cantAutoOpenAround(Coordinate target) {
-        return countAroundLandMine(target) > 0 || get(target).cantAutoOpenAroundThis();
+        return countAroundLandMine(target) > 0;
     }
 
     Cell get(Coordinate coordinate) {
@@ -128,10 +136,12 @@ public class Board {
         sb.append(config.toColumnIdentifierString()).append("\n");
         for (int row = 0; row < config.rowCount(); row++) {
             sb.append(String.format("%" + config.countRowIdentifierMaxSpace() + "d", row + 1));
+            sb.append(" ");
             for (int column = 0; column < config.columnCount(); column++) {
                 Coordinate coordinate = new Coordinate(row, column);
                 sb.append(cellToString(coordinate)).append(" ");
             }
+            sb.append("\n");
         }
         return sb.toString();
     }
@@ -139,6 +149,9 @@ public class Board {
     private String cellToString(Coordinate coordinate) {
         Cell cell = get(coordinate);
         if (cell.isLandMine()) {
+            return cell.toString();
+        }
+        if (cell.isClosed()) {
             return cell.toString();
         }
         int count = countAroundLandMine(coordinate);

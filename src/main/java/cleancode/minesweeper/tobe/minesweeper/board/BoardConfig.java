@@ -7,9 +7,9 @@ public record BoardConfig(int rowCount, int columnCount, int mineCount) {
 
     public String toColumnIdentifierString() {
         StringBuilder result = new StringBuilder();
-        result.append(" ".repeat(Math.max(0, countRowIdentifierMaxSpace())));
+        result.append(" ".repeat(Math.max(0, countRowIdentifierMaxSpace() + 1)));
         for (int i = 0; i < columnCount; i++) {
-            result.append('A' + i);
+            result.append(Character.toString('A' + i));
             result.append(' ');
         }
         return result.toString();

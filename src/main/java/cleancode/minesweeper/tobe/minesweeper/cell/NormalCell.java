@@ -14,11 +14,6 @@ class NormalCell extends Cell {
     }
 
     @Override
-    public boolean canAutoOpenAroundThis() {
-        return !isFlagged();
-    }
-
-    @Override
     public boolean isCleared() {
         return isOpened();
     }
