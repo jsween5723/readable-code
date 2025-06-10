@@ -6,7 +6,11 @@ import cleancode.minesweeper.tobe.minesweeper.board.Coordinate;
 import java.util.Scanner;
 
 public class InputHandler {
-    private final Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner;
+
+    public InputHandler(Scanner scanner) {
+        this.scanner = scanner;
+    }
 
     public CellAction inputAction() {
         int index = scanner.nextLine().charAt(0) - '0';
@@ -20,7 +24,7 @@ public class InputHandler {
     public Coordinate inputCoordinate() {
         String input = scanner.nextLine();
         int c = input.charAt(0) - 'A';
-        int r = Integer.parseInt(input.substring(1))-1;
+        int r = Integer.parseInt(input.substring(1)) - 1;
         return new Coordinate(r, c);
     }
 }

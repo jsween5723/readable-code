@@ -4,8 +4,10 @@ import cleancode.minesweeper.tobe.minesweeper.CellAction;
 import cleancode.minesweeper.tobe.minesweeper.board.Board;
 import cleancode.minesweeper.tobe.minesweeper.board.Coordinate;
 
+import java.util.Scanner;
+
 public class IOHandler {
-    private final InputHandler inputHandler = new InputHandler();
+    private final InputHandler inputHandler = new InputHandler(new Scanner(System.in));
     private final OutputHandler outputHandler = new OutputHandler();
 
     public void printStart(Board board) {
