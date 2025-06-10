@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * 1-1. Cell 배열에 게임레벨의 지뢰개수만큼 LandMineCell을 할당할 수 있다.
  * 1-2. 나머지는 NormalCell을 할당하며, 주변 셀의 LandMineCell 수를 가진다.
  * 2. 좌표를 입력받아 Cell을 open 할 수 있다.
- * 2-1. 지뢰라면 모든 셀을 열고 게임을 끝낸다. (isCleared = false) (cells.forEach.isOpened = true)
+ * 2-1. 지뢰라면 모든 셀을 열고 게임을 끝낸다. (isCleared = false) (isMineOpened = true)
  * 2-2. 지뢰가 아니라면 주변 Cell 열기가 가능할 경우 함께 연다.
  * 4. 모든 셀의 클리어 여부를 판단할 수 있다.
  */
