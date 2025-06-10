@@ -1,7 +1,5 @@
-package cleancode.minesweeper.tobe;
+package cleancode.minesweeper.tobe.minesweeper.cell;
 
-import cleancode.minesweeper.tobe.minesweeper.cell.Cell;
-import cleancode.minesweeper.tobe.minesweeper.cell.CellSign;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
