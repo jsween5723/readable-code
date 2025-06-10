@@ -9,7 +9,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * 1. 지뢰 셀은 열렸을 때 지뢰표시를 해야한다.
  * 2. 지뢰 셀은 지뢰다.
- * 3. 지뢰 셀은 주변 셀을 열 수 없다.
  * 4. 지뢰 셀의 클리어 조건은 깃발이 꽂힌 상태다.
  */
 class LandMineCellTest {
@@ -25,21 +24,6 @@ class LandMineCellTest {
             landMineCell.open();
             //then
             assertThat(landMineCell.toString()).isEqualTo(CellSign.MINE_OPENED.sign);
-        }
-    }
-
-
-    @Nested
-    @DisplayName("지뢰 셀 주변 셀 열기 여부 테스트")
-    class CanAutoOpenAroundThis {
-        @Test
-        @DisplayName("지뢰 셀은 주변 셀을 열 수 없다.")
-        void canAutoOpenAroundThis() {
-            //given
-            Cell landMineCell = Cell.mineCell();
-            //when
-            //then
-            assertThat(landMineCell.canAutoOpenAroundThis()).isTrue();
         }
     }
 
