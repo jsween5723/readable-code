@@ -106,6 +106,17 @@ public class Board {
         return countAroundLandMine(target) > 0;
     }
 
+    private int countAroundLandMine(Coordinate coordinate) {
+        int count = 0;
+        for (int[] delta : DELTAS) {
+            Coordinate targetCoordinates = new Coordinate(coordinate.row() + delta[0], coordinate.column() + delta[1]);
+            if (targetCoordinates.isNotMinus() && config.isNotOver(targetCoordinates) && get(targetCoordinates).isLandMine()) {
+                count++;
+            }
+        }
+        return count;
+    }
+
     public boolean isCleared() {
         return Arrays.stream(cells).flatMap(Arrays::stream).allMatch(Cell::isCleared);
     }
@@ -150,16 +161,5 @@ public class Board {
         int count = countAroundLandMine(coordinate);
         if (count == 0) return cell.toString();
         return count + "";
-    }
-
-    private int countAroundLandMine(Coordinate coordinate) {
-        int count = 0;
-        for (int[] delta : DELTAS) {
-            Coordinate targetCoordinates = new Coordinate(coordinate.row() + delta[0], coordinate.column() + delta[1]);
-            if (targetCoordinates.isNotMinus() && config.isNotOver(targetCoordinates) && get(targetCoordinates).isLandMine()) {
-                count++;
-            }
-        }
-        return count;
     }
 }
