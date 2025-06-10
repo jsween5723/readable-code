@@ -1,4 +1,4 @@
-package cleancode.minesweeper.tobe.board.cell;
+package cleancode.minesweeper.tobe.minesweeper.cell;
 
 /**
  * 1. 일반 셀은 열렸을 때 주변에 지뢰개수를 표시해야한다.

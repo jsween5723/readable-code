@@ -1,4 +1,4 @@
-package cleancode.minesweeper.tobe.board.cell;
+package cleancode.minesweeper.tobe.minesweeper.cell;
 
 /**
  * 1. 셀은 모두 열 수 있어야한다.

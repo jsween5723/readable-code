@@ -1,4 +1,4 @@
-package cleancode.minesweeper.tobe.board.cell;
+package cleancode.minesweeper.tobe.minesweeper.cell;
 
 public enum CellSign {
     CLOSED("□"), FLAGGED("⚑"), NORMAL_OPENED("■"), MINE_OPENED("☼");

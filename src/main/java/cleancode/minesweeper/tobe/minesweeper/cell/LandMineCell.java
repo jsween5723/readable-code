@@ -1,4 +1,4 @@
-package cleancode.minesweeper.tobe.board.cell;
+package cleancode.minesweeper.tobe.minesweeper.cell;
 
 /**
  * 1. 지뢰 셀은 열렸을 때 지뢰표시를 해야한다.
