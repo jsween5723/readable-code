@@ -39,6 +39,10 @@ public abstract class Cell {
         return !canAutoOpenAroundThis();
     }
 
+    public boolean cantAutoOpen() {
+        return isOpened() || isFlagged() || !isLandMine();
+    }
+
     abstract public boolean isLandMine();
 
     abstract boolean canAutoOpenAroundThis();
