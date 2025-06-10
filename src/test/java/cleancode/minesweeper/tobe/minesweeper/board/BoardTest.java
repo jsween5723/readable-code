@@ -230,4 +230,47 @@ class BoardTest {
             assertThat(board.isCleared()).isTrue();
         }
     }
+
+    @Test
+    @DisplayName("toString 테스트")
+    void toStringTest() {
+        //given
+        BoardConfig config = MineSweeperGameLevel.BEGINNER.boardConfig;
+        Board board = spy(Board.withConfig(config));
+        for (int row = 0; row < config.rowCount(); row++) {
+            for (int col = 0; col < config.columnCount(); col++) {
+                Coordinate coordinate = new Coordinate(row, col);
+                when(board.get(coordinate)).thenReturn(switch (col % 4) {
+                    case 0 -> {
+                        Cell cell = Cell.normalCell();
+                        cell.toggleFlag();
+                        yield cell;
+                    }
+                    case 1 -> {
+                        Cell cell = row == 0 ? Cell.mineCell() : Cell.normalCell();
+                        cell.open();
+                        yield cell;
+                    }
+                    case 2 -> Cell.normalCell();
+                    case 3 -> {
+                        Cell cell = Cell.mineCell();
+                        cell.open();
+                        yield cell;
+                    }
+                    default -> throw new IllegalStateException("Unexpected value: " + col);
+                });
+            }
+        }
+        //when
+        String boardString = board.toString();
+        //then     CLOSED("□"), FLAGGED("⚑"), NORMAL_OPENED("■"), MINE_OPENED("☼");
+        assertThatCharSequence(boardString).isEqualToIgnoringWhitespace("""
+                  A B C D
+                  1 ⚑ ☼ □ ☼
+                  2 ⚑ 1 □ ☼
+                  3 ⚑ ■ □ ☼
+                  4 ⚑ ■ □ ☼
+                """);
+
+    }
 }
