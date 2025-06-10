@@ -50,4 +50,14 @@ class BoardConfigTest {
     }
 
 
+    @Test
+    @DisplayName("행 식별자 문자열 테스트")
+    void printColumn() {
+        //given
+        BoardConfig config = new BoardConfig(4, 4, 4);
+        //when
+        String columnIdentifierString = config.toColumnIdentifierString();
+        assertThat(columnIdentifierString).isEqualTo("  A B C D ");
+
+    }
 }

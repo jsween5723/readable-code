@@ -27,7 +27,9 @@ class CellTest {
             landMineCell.open();
             //then
             assertThat(normalCell.isOpened()).isTrue();
+            assertThat(normalCell.isClosed()).isFalse();
             assertThat(landMineCell.isOpened()).isTrue();
+            assertThat(landMineCell.isClosed()).isFalse();
         }
 
         @Test
@@ -41,7 +43,9 @@ class CellTest {
             landMineCell.open();
             //when-then
             assertThat(normalCell.isOpened()).isTrue();
+            assertThat(normalCell.isClosed()).isFalse();
             assertThat(landMineCell.isOpened()).isTrue();
+            assertThat(landMineCell.isClosed()).isFalse();
         }
     }
 
