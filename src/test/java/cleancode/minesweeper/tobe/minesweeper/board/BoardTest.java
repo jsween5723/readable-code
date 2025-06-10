@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.stream.IntStream;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 /**
@@ -80,6 +80,28 @@ class BoardTest {
             assertThat(board.isCleared()).isFalse();
         }
 
+        @Test
+        @DisplayName("깃발이 달렸거나 이미 열린 셀은 열리지 않는다.")
+        void openCellWithCoordinatesn() {
+            //given
+            BoardConfig config = MineSweeperGameLevel.BEGINNER.boardConfig;
+            Board board = spy(Board.withConfig(config));
+            Coordinate flaggedCoordinate = new Coordinate(1, 1);
+            Coordinate openedCoordinate = new Coordinate(1, 2);
+            Cell flagCell = spy(Cell.normalCell());
+            flagCell.toggleFlag();
+            Cell openedCell = spy(Cell.normalCell());
+            openedCell.open();
+            when(board.get(flaggedCoordinate)).thenReturn(flagCell);
+            when(board.get(openedCoordinate)).thenReturn(openedCell);
+            //when
+            board.open(flaggedCoordinate);
+            board.open(openedCoordinate);
+            //then
+            verify(flagCell, never()).open();
+            verify(openedCell, times(1)).open();
+        }
+
 
         @Test
         @DisplayName("지뢰가 아니고 주변에 지뢰가 없다면, 깃발을 제외하고 함께 연다.")
@@ -103,8 +125,61 @@ class BoardTest {
                 assertThat(cell.isOpened()).isTrue();
             }
         }
-
     }
+
+    @Test
+    @DisplayName("좌표를 입력받아 깃발을 토글할 수 있다.")
+    void flagCellWithCoordinates() {
+        //given
+        BoardConfig config = MineSweeperGameLevel.BEGINNER.boardConfig;
+        Board board = spy(Board.withConfig(config));
+        Coordinate flaggedCoordinate = new Coordinate(1, 1);
+        Cell flagCell = spy(Cell.normalCell());
+        when(board.get(flaggedCoordinate)).thenReturn(flagCell);
+        //when
+        board.toggleFlag(flaggedCoordinate);
+        //then
+        verify(flagCell).toggleFlag();
+    }
+
+    @Nested
+    @DisplayName("보드는 설정을 통해 좌표값이 유효한지 검증할 수 있다.")
+    class ValidateCoordinates {
+        @Test
+        @DisplayName("범위에 적합하면 예외를 던지지 않는다.")
+        void configCoordinateBalidate() {
+            //given
+            BoardConfig config = MineSweeperGameLevel.BEGINNER.boardConfig;
+            Board board = Board.withConfig(config);
+            Coordinate targetCoordinate = new Coordinate(1, 1);
+            //when
+            //then
+            assertThatNoException().isThrownBy(() -> board.validateCoordinates(targetCoordinate));
+        }
+
+        @Test
+        @DisplayName("좌표가 범위밖이면 예외를 던진다.")
+        void configCoordinateBalidate2() {
+            //given
+            BoardConfig config = MineSweeperGameLevel.BEGINNER.boardConfig;
+            Board board = Board.withConfig(config);
+            Coordinate targetCoordinateRowOver = new Coordinate(config.rowCount() + 1, config.columnCount());
+            Coordinate targetCoordinateColumnOver = new Coordinate(config.rowCount(), config.columnCount() + 1);
+            Coordinate targetCoordinateRowUnder = new Coordinate(-1, config.columnCount());
+            Coordinate targetCoordinateColumnUnder = new Coordinate(config.rowCount(), -1);
+            //when
+            //then
+            assertThatThrownBy(() -> board.validateCoordinates(targetCoordinateRowOver))
+                    .isInstanceOf(IllegalArgumentException.class);
+            assertThatThrownBy(() -> board.validateCoordinates(targetCoordinateColumnOver))
+                    .isInstanceOf(IllegalArgumentException.class);
+            assertThatThrownBy(() -> board.validateCoordinates(targetCoordinateRowUnder))
+                    .isInstanceOf(IllegalArgumentException.class);
+            assertThatThrownBy(() -> board.validateCoordinates(targetCoordinateColumnUnder))
+                    .isInstanceOf(IllegalArgumentException.class);
+        }
+    }
+
 
     @Nested
     @DisplayName("모든 셀의 클리어 여부를 판단할 수 있다.")
