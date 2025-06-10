@@ -2,7 +2,7 @@ package cleancode.minesweeper.tobe.minesweeper.board;
 
 public record BoardConfig(int rowCount, int columnCount, int mineCount) {
     boolean isNotOver(Coordinate coordinate) {
-        return coordinate.row() < rowCount && coordinate.column() < columnCount;
+        return coordinate.row() < rowCount && coordinate.column() < columnCount && coordinate.isNotMinus();
     }
 
     public String toColumnIdentifierString() {

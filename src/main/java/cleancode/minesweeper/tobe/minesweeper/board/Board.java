@@ -53,6 +53,10 @@ public class Board {
         return new Board(cells, config);
     }
 
+    public void validateCoordinates(Coordinate coordinate) {
+        if (config.isNotOver(coordinate)) return;
+        throw new IllegalArgumentException("잘못된 번호를 선택하셨습니다.");
+    }
 
     public void open(Coordinate coordinate) {
         Cell cell = get(coordinate);
@@ -66,19 +70,9 @@ public class Board {
         }
     }
 
-    public void toggleFlag(Coordinate coordinate) {
-        get(coordinate).toggleFlag();
-    }
-
-    public void validateCoordinates(Coordinate coordinate) {
-        if (config.isNotOver(coordinate)) return;
-        throw new IllegalArgumentException("잘못된 번호를 선택하셨습니다.");
-    }
-
     private void openAllCells() {
         Arrays.stream(cells).flatMap(Arrays::stream).forEach(Cell::open);
     }
-
 
     private void openWithAround(Coordinate firstTarget) {
         Deque<Coordinate> targets = new ArrayDeque<>();
@@ -91,7 +85,7 @@ public class Board {
             }
             for (int[] delta : DELTAS) {
                 Coordinate targetCoordinate = new Coordinate(coordinate.row() + delta[0], coordinate.column() + delta[1]);
-                if (isNotOver(targetCoordinate)) {
+                if (config.isNotOver(targetCoordinate)) {
                     Cell cell = get(targetCoordinate);
                     if (cell.cantAutoOpen()) {
                         continue;
@@ -102,20 +96,13 @@ public class Board {
         }
     }
 
-    private boolean isNotOver(Coordinate targetCoordinates) {
-        return targetCoordinates.isNotMinus() && config.isNotOver(targetCoordinates);
+    public void toggleFlag(Coordinate coordinate) {
+        get(coordinate).toggleFlag();
     }
+
 
     boolean cantAutoOpenAround(Coordinate target) {
         return countAroundLandMine(target) > 0;
-    }
-
-    Cell get(Coordinate coordinate) {
-        return cells[coordinate.row()][coordinate.column()];
-    }
-
-    private void assignCell(Coordinate coordinate, Cell cell) {
-        cells[coordinate.row()][coordinate.column()] = cell;
     }
 
     public boolean isCleared() {
@@ -124,6 +111,15 @@ public class Board {
 
     public boolean isMineOpened() {
         return Arrays.stream(cells).flatMap(Arrays::stream).anyMatch(cell -> cell.isLandMine() && cell.isOpened());
+    }
+
+
+    Cell get(Coordinate coordinate) {
+        return cells[coordinate.row()][coordinate.column()];
+    }
+
+    private void assignCell(Coordinate coordinate, Cell cell) {
+        cells[coordinate.row()][coordinate.column()] = cell;
     }
 
     @Override
