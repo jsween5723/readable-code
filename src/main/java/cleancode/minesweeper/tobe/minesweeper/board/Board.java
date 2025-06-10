@@ -122,10 +122,6 @@ public class Board {
         return Arrays.stream(cells).flatMap(Arrays::stream).allMatch(Cell::isCleared);
     }
 
-    public boolean isAllChecked() {
-        return Arrays.stream(cells).flatMap(Arrays::stream).allMatch(cell -> cell.isOpened() || cell.isFlagged());
-    }
-
     public boolean isMineOpened() {
         return Arrays.stream(cells).flatMap(Arrays::stream).anyMatch(cell -> cell.isLandMine() && cell.isOpened());
     }
