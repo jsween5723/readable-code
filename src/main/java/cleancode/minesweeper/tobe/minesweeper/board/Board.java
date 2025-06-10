@@ -48,9 +48,9 @@ public class Board {
     }
 
 
-    static public Board withConfig(BoardConfig level) {
-        Cell[][] cells = new Cell[level.rowCount()][level.columnCount()];
-        return new Board(cells, level);
+    static public Board withConfig(BoardConfig config) {
+        Cell[][] cells = new Cell[config.rowCount()][config.columnCount()];
+        return new Board(cells, config);
     }
 
 
@@ -116,6 +116,10 @@ public class Board {
 
     public boolean isAllChecked() {
         return Arrays.stream(cells).flatMap(Arrays::stream).allMatch(cell -> cell.isOpened() || cell.isFlagged());
+    }
+
+    public boolean isMineOpened() {
+        return Arrays.stream(cells).flatMap(Arrays::stream).allMatch(cell -> cell.isLandMine() && cell.isOpened());
     }
 
     @Override
