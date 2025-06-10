@@ -11,11 +11,8 @@ package cleancode.minesweeper.tobe.minesweeper.cell;
 public abstract class Cell {
     private boolean opened = false;
     private boolean flagged = false;
-    static public Cell normalCellWithAroundMine(int aroundMineCount) {
-        return new NormalCell(aroundMineCount);
-    }
-    static public Cell normalCellWithoutAroundMine() {
-        return new NormalCell(0);
+    static public Cell normalCell() {
+        return new NormalCell();
     }
     static public Cell mineCell() {
         return new LandMineCell();
