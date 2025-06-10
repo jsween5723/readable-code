@@ -63,6 +63,10 @@ public class Board {
         }
     }
 
+    public void toggleFlag(Coordinate coordinate) {
+        get(coordinate).toggleFlag();
+    }
+
     private void openAllCells() {
         Arrays.stream(cells).flatMap(Arrays::stream).forEach(Cell::open);
     }
