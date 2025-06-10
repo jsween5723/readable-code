@@ -3,12 +3,10 @@ package cleancode.minesweeper.tobe.minesweeper;
 
 import cleancode.minesweeper.tobe.minesweeper.board.Board;
 import cleancode.minesweeper.tobe.minesweeper.board.Coordinate;
-import cleancode.minesweeper.tobe.minesweeper.io.InputHandler;
-import cleancode.minesweeper.tobe.minesweeper.io.OutputHandler;
+import cleancode.minesweeper.tobe.minesweeper.io.IOHandler;
 
 public class MinesweeperGame {
-    private final InputHandler inputHandler = new InputHandler();
-    private final OutputHandler outputHandler = new OutputHandler();
+    private final IOHandler ioHandler = new IOHandler();
     private final Board board;
     private GameStatus gameStatus = GameStatus.PROCESSING;
 
@@ -17,35 +15,23 @@ public class MinesweeperGame {
     }
 
     public void start() {
-        outputHandler.printStartMessage();
-        outputHandler.printBoard(board);
+        ioHandler.printStart(board);
         while (isGameContinue()) {
             try {
-                Coordinate coordinate = selectCellCoordinate();
+                Coordinate coordinate = ioHandler.selectCellCoordinate();
                 board.validateCoordinates(coordinate);
-                CellAction actionNumber = selectAction();
+                CellAction actionNumber = ioHandler.selectAction();
                 switch (actionNumber) {
                     case OPEN -> board.open(coordinate);
                     case TOGGLE_FLAG -> board.toggleFlag(coordinate);
                 }
-                outputHandler.printBoard(board);
+                ioHandler.printBoard(board);
                 checkGameStatus();
             } catch (RuntimeException e) {
-                outputHandler.printExceptionMessage(e);
+                ioHandler.printExceptionMessage(e);
             }
         }
     }
-
-    private CellAction selectAction() {
-        outputHandler.printInputActionMessage();
-        return inputHandler.inputAction();
-    }
-
-    private Coordinate selectCellCoordinate() {
-        outputHandler.printInputCoordinateMessage();
-        return inputHandler.inputCoordinate();
-    }
-
 
     private boolean isGameContinue() {
         return gameStatus == GameStatus.PROCESSING;
@@ -54,11 +40,11 @@ public class MinesweeperGame {
     private void checkGameStatus() {
         if (board.isMineOpened()) {
             gameStatus = GameStatus.LOSE;
-            outputHandler.printGameOverMessage();
+            ioHandler.printGameOverMessage();
         }
         if (board.isCleared()) {
             gameStatus = GameStatus.WIN;
-            outputHandler.printGameClearMessage();
+            ioHandler.printGameClearMessage();
         }
     }
 
