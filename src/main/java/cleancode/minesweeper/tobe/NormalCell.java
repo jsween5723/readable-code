@@ -11,8 +11,16 @@ public class NormalCell extends Cell {
     public static final String NORMAL_CELL_OPENED_SIGN = "■";
     private final int aroundMineCount;
 
-    public NormalCell(int aroundMineCount) {
+    private NormalCell(int aroundMineCount) {
         this.aroundMineCount = aroundMineCount;
+    }
+
+    static public NormalCell withAroundMineCount(int aroundMineCount) {
+        return new NormalCell(aroundMineCount);
+    }
+
+    static public NormalCell withoutAroundMine() {
+        return new NormalCell(0);
     }
 
     @Override
