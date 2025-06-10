@@ -6,7 +6,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.stream.IntStream;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
 /**
  * 1. 게임레벨을 인자로 받아 Cell 배열을 초기화 할 수 있다.
@@ -18,7 +22,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  * 4. 모든 셀의 클리어 여부를 판단할 수 있다.
  */
 class BoardTest {
-    private final CoordinateFinder coordinateFinder = new CoordinateFinder();
 
     @Nested
     @DisplayName("게임레벨을 인자로 받아 Cell 배열을 초기화 할 수 있다.")
@@ -63,12 +66,13 @@ class BoardTest {
     @DisplayName("좌표를 입력받아 Cell을 open 할 수 있다.")
     class OpenCellWithCoordinates {
         @Test
-        @DisplayName("지뢰라면 모든 셀을 열고 게임을 끝낸다. (isCleared = false) (isAllOpened = true)")
+        @DisplayName("지뢰라면 모든 셀을 연다. (isCleared = false) (isAllOpened = true)")
         void openCellWithCoordinates() {
             //given
             BoardConfig config = MineSweeperGameLevel.BEGINNER.boardConfig;
-            Board board = Board.withConfig(config);
-            Coordinate mineCoordinate = coordinateFinder.findMineCoordinate(board);
+            Board board = spy(Board.withConfig(config));
+            Coordinate mineCoordinate = new Coordinate(1, 1);
+            when(board.get(mineCoordinate)).thenReturn(Cell.mineCell());
             //when
             board.open(mineCoordinate);
             //then
@@ -82,53 +86,22 @@ class BoardTest {
         void openNormalCell() {
             //given
             BoardConfig config = MineSweeperGameLevel.HARD.boardConfig;
-            Board board = Board.withConfig(config);
-            Coordinate normalCoordinate = coordinateFinder.findCanAutoOpenAroundCellCoordinate(board);
+            Board board = spy(Board.withConfig(config));
+            Coordinate targetCoordinate = new Coordinate(1, 1);
+            int[][] deltas = {{-1, -1}, {-1, 0}, {-1, +1}, {0, -1}, {0, +1}, {1, -1}, {1, 0}, {1, +1}};
+            Cell[] cells = IntStream.range(0, 8).mapToObj((i) -> Cell.normalCell()).toArray(Cell[]::new);
+            Coordinate[] coordinates = Arrays.stream(deltas)
+                    .map(delta -> new Coordinate(targetCoordinate.row() + delta[0], targetCoordinate.column() + delta[1]))
+                    .toArray(Coordinate[]::new);
+            for (int i = 0; i < cells.length; i++) {
+                when(board.get(coordinates[i])).thenReturn(cells[i]);
+            }
             //when
-            board.open(normalCoordinate);
+            board.open(targetCoordinate);
             //then
-            int aroundOpenedCount = countAroundOpenedCells(board, normalCoordinate);
-            int cantOpenCellCount = countAroundCantOpenCell(board, normalCoordinate);
-            int expectedAroundCellCount = countAroundCells(board, normalCoordinate);
-            assertThat(aroundOpenedCount + cantOpenCellCount).isEqualTo(expectedAroundCellCount);
-        }
-
-        private int countAroundCells(Board board, Coordinate coordinate) {
-            int[][] deltas = {{-1, -1}, {-1, 0}, {-1, +1}, {0, -1}, {0, +1}, {1, -1}, {1, 0}, {1, +1}};
-            int count = 0;
-            for (int[] delta : deltas) {
-                Coordinate targetCoordinates = new Coordinate(coordinate.row() + delta[0], coordinate.column() + delta[1]);
-                if (targetCoordinates.isNotMinus() && board.config.isNotOver(targetCoordinates)) {
-                    count++;
-                }
+            for (Cell cell : cells) {
+                assertThat(cell.isOpened()).isTrue();
             }
-            return count;
-        }
-
-        private int countAroundOpenedCells(Board board, Coordinate coordinate) {
-            int[][] deltas = {{-1, -1}, {-1, 0}, {-1, +1}, {0, -1}, {0, +1}, {1, -1}, {1, 0}, {1, +1}};
-            int count = 0;
-            for (int[] delta : deltas) {
-                Coordinate targetCoordinates = new Coordinate(coordinate.row() + delta[0], coordinate.column() + delta[1]);
-                if (targetCoordinates.isNotMinus() && board.config.isNotOver(targetCoordinates)) {
-                    Cell cell = board.get(targetCoordinates);
-                    if (cell.isFlagged()) count++;
-                }
-            }
-            return count;
-        }
-
-        private int countAroundCantOpenCell(Board board, Coordinate coordinate) {
-            int[][] deltas = {{-1, -1}, {-1, 0}, {-1, +1}, {0, -1}, {0, +1}, {1, -1}, {1, 0}, {1, +1}};
-            int count = 0;
-            for (int[] delta : deltas) {
-                Coordinate targetCoordinates = new Coordinate(coordinate.row() + delta[0], coordinate.column() + delta[1]);
-                if (targetCoordinates.isNotMinus() && board.config.isNotOver(targetCoordinates)) {
-                    Cell cell = board.get(targetCoordinates);
-                    if (!cell.isFlagged()) count++;
-                }
-            }
-            return count;
         }
 
     }
@@ -152,10 +125,11 @@ class BoardTest {
         void isNotCellClearedThenClearedFalse() {
             //given
             BoardConfig config = MineSweeperGameLevel.BEGINNER.boardConfig;
-            Board board = Board.withConfig(config);
-            Coordinate landMineCell = coordinateFinder.findMineCoordinate(board);
+            Board board = spy(Board.withConfig(config));
+            Coordinate mineCoordinate = new Coordinate(1, 1);
+            when(board.get(mineCoordinate)).thenReturn(Cell.mineCell());
             //when
-            board.open(landMineCell);
+            board.open(mineCoordinate);
             //then
             assertThat(board.isCleared()).isFalse();
         }
