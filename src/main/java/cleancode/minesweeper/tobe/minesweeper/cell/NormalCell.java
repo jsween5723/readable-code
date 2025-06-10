@@ -8,13 +8,6 @@ package cleancode.minesweeper.tobe.minesweeper.cell;
  * 5. 일반 셀은 지뢰가 아니다.
  */
 class NormalCell extends Cell {
-    private final int aroundMineCount;
-
-    NormalCell(int aroundMineCount) {
-        this.aroundMineCount = aroundMineCount;
-    }
-
-
     @Override
     public boolean isLandMine() {
         return false;
@@ -22,7 +15,7 @@ class NormalCell extends Cell {
 
     @Override
     public boolean canAutoOpenAroundThis() {
-        return aroundMineCount == 0 && !isOpened() && !isFlagged();
+        return !isOpened() && !isFlagged();
     }
 
     @Override
@@ -33,10 +26,7 @@ class NormalCell extends Cell {
     @Override
     public String toString() {
         if (isOpened()) {
-            if (aroundMineCount == 0) {
-                return CellSign.NORMAL_OPENED.sign;
-            }
-            return String.valueOf(aroundMineCount);
+            return CellSign.NORMAL_OPENED.sign;
         }
         return super.toString();
     }
