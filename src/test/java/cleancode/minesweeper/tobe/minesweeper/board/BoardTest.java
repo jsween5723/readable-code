@@ -50,8 +50,8 @@ class BoardTest {
             BoardConfig config = MineSweeperGameLevel.BEGINNER.boardConfig;
             Board board = Board.withConfig(config);
             //when
-            for (int row = 0; row < board.level.rowCount(); row++) {
-                for (int col = 0; col < board.level.columnCount(); col++) {
+            for (int row = 0; row < board.config.rowCount(); row++) {
+                for (int col = 0; col < board.config.columnCount(); col++) {
                     if (board.get(new Coordinate(row, col)) instanceof NormalCell normalCell) {
                         final int count = countAroundLandMine(board, new Coordinate(row, col));
                         //then
@@ -66,7 +66,7 @@ class BoardTest {
             int[][] deltas = {{-1, -1}, {-1, 0}, {-1, +1}, {0, -1}, {0, +1}, {1, -1}, {1, 0}, {1, +1}};
             for (int[] delta : deltas) {
                 Coordinate targetCoordinates = new Coordinate(coordinate.row() + delta[0], coordinate.column() + delta[1]);
-                if (targetCoordinates.isNotMinus() && board.level.isNotOver(targetCoordinates) && board.get(targetCoordinates).isLandMine()) {
+                if (targetCoordinates.isNotMinus() && board.config.isNotOver(targetCoordinates) && board.get(targetCoordinates).isLandMine()) {
                     count++;
                 }
             }
@@ -109,7 +109,7 @@ class BoardTest {
             int[][] deltas = {{-1, -1}, {-1, 0}, {-1, +1}, {0, -1}, {0, +1}, {1, -1}, {1, 0}, {1, +1}};
             for (int[] delta : deltas) {
                 Coordinate targetCoordinates = new Coordinate(coordinate.row() + delta[0], coordinate.column() + delta[1]);
-                if (targetCoordinates.isNotMinus() && board.level.isNotOver(targetCoordinates)) {
+                if (targetCoordinates.isNotMinus() && board.config.isNotOver(targetCoordinates)) {
                     Cell cell = board.get(targetCoordinates);
                     //then
                     assertThat(cell.isOpened()).isEqualTo(isExpectedOpen(cell));
@@ -242,8 +242,8 @@ class BoardTest {
             BoardConfig config = MineSweeperGameLevel.BEGINNER.boardConfig;
             Board board = Board.withConfig(config);
             //when
-            for (int row = 0; row < board.level.rowCount(); row++) {
-                for (int col = 0; col < board.level.columnCount(); col++) {
+            for (int row = 0; row < board.config.rowCount(); row++) {
+                for (int col = 0; col < board.config.columnCount(); col++) {
                     Cell cell = board.get(new Coordinate(row, col));
                     if (cell instanceof LandMineCell landMineCell) {
                         landMineCell.toggleFlag();
