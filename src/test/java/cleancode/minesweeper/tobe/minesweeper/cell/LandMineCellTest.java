@@ -39,7 +39,7 @@ class LandMineCellTest {
             Cell landMineCell = Cell.mineCell();
             //when
             //then
-            assertThat(landMineCell.cantAutoOpenAroundThis()).isTrue();
+            assertThat(landMineCell.canAutoOpenAroundThis()).isTrue();
         }
     }
 

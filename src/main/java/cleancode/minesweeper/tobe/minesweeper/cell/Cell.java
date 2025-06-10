@@ -18,6 +18,9 @@ public abstract class Cell {
         return new LandMineCell();
     }
 
+    public boolean cantOpen() {
+        return isOpened() || isFlagged();
+    }
     public void open() {
         if (flagged) return;
         opened = true;
@@ -28,6 +31,10 @@ public abstract class Cell {
         flagged = !flagged;
     }
 
+    public boolean isClosed() {
+        return !isOpened();
+    }
+
     public boolean isOpened() {
         return opened;
     }
@@ -35,17 +42,12 @@ public abstract class Cell {
     public boolean isFlagged() {
         return flagged;
     }
-    public boolean cantAutoOpenAroundThis() {
-        return !canAutoOpenAroundThis();
-    }
 
     public boolean cantAutoOpen() {
-        return isOpened() || isFlagged() || !isLandMine();
+        return cantOpen() || isLandMine();
     }
 
     abstract public boolean isLandMine();
-
-    abstract boolean canAutoOpenAroundThis();
 
     abstract public boolean isCleared();
 

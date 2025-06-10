@@ -13,11 +13,6 @@ class LandMineCell extends Cell {
     }
 
     @Override
-    public boolean canAutoOpenAroundThis() {
-        return false;
-    }
-
-    @Override
     public boolean isCleared() {
         return isFlagged();
     }
