@@ -1,5 +1,7 @@
 package cleancode.minesweeper.tobe;
 
+import cleancode.minesweeper.tobe.board.cell.Cell;
+import cleancode.minesweeper.tobe.board.cell.CellSign;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -20,8 +22,8 @@ class CellTest {
         @DisplayName("셀을 열면 열린다.")
         void notLandMineThenOpen() {
             //given
-            Cell normalCell = new NormalCell(0);
-            Cell landMineCell = new LandMineCell();
+            Cell normalCell = Cell.normalCellWithoutAroundMine();
+            Cell landMineCell = Cell.mineCell();
             //when
             normalCell.open();
             landMineCell.open();
@@ -34,8 +36,8 @@ class CellTest {
         @DisplayName("열린 셀을 열면 변화가 없다.")
         void alreadyOpenedCellThenThrow() {
             //given
-            Cell normalCell = new NormalCell(0);
-            Cell landMineCell = new LandMineCell();
+            Cell normalCell = Cell.normalCellWithoutAroundMine();
+            Cell landMineCell = Cell.mineCell();
             //when
             normalCell.open();
             landMineCell.open();
@@ -52,8 +54,8 @@ class CellTest {
         @DisplayName("열리지 않은 셀에 플래그를 달 수 있다.")
         void toggleFlag1() {
             //given
-            Cell normalCell = new NormalCell(0);
-            Cell landMineCell = new LandMineCell();
+            Cell normalCell = Cell.normalCellWithoutAroundMine();
+            Cell landMineCell = Cell.mineCell();
             //when
             normalCell.toggleFlag();
             landMineCell.toggleFlag();
@@ -66,8 +68,8 @@ class CellTest {
         @DisplayName("플래그가 달린 셀에 시도하면 플래그를 뺄 수 있다.")
         void toggleFlag2() {
             //given
-            Cell normalCell = new NormalCell(0);
-            Cell landMineCell = new LandMineCell();
+            Cell normalCell = Cell.normalCellWithoutAroundMine();
+            Cell landMineCell = Cell.mineCell();
             normalCell.toggleFlag();
             landMineCell.toggleFlag();
             //when
@@ -82,8 +84,8 @@ class CellTest {
         @DisplayName("열린 셀에 시도하면 변화가 없다 (false)")
         void toggleFlag3() {
             //given
-            Cell normalCell = new NormalCell(0);
-            Cell landMineCell = new LandMineCell();
+            Cell normalCell = Cell.normalCellWithoutAroundMine();
+            Cell landMineCell = Cell.mineCell();
             normalCell.open();
             landMineCell.open();
             //when
@@ -102,25 +104,25 @@ class CellTest {
         @DisplayName("닫힌 상태를 출력할 수 있다.")
         void to_string() {
             //        given
-            Cell normalCell = new NormalCell(0);
-            Cell landMineCell = new LandMineCell();
+            Cell normalCell = Cell.normalCellWithoutAroundMine();
+            Cell landMineCell = Cell.mineCell();
 //        when-then
-            assertThatCharSequence(normalCell.toString()).isEqualTo(Cell.UNOPENED_SIGN);
-            assertThatCharSequence(landMineCell.toString()).isEqualTo(Cell.UNOPENED_SIGN);
+            assertThatCharSequence(normalCell.toString()).isEqualTo(CellSign.CLOSED.sign);
+            assertThatCharSequence(landMineCell.toString()).isEqualTo(CellSign.CLOSED.sign);
         }
 
         @Test
         @DisplayName("깃발이 달린 상태를 출력할 수 있다.")
         void to_string2() {
             //        given
-            Cell normalCell = new NormalCell(0);
-            Cell landMineCell = new LandMineCell();
+            Cell normalCell = Cell.normalCellWithoutAroundMine();
+            Cell landMineCell = Cell.mineCell();
 //        when
             normalCell.toggleFlag();
             landMineCell.toggleFlag();
 //            then
-            assertThatCharSequence(normalCell.toString()).isEqualTo(Cell.FLAGGED_SIGN);
-            assertThatCharSequence(landMineCell.toString()).isEqualTo(Cell.FLAGGED_SIGN);
+            assertThatCharSequence(normalCell.toString()).isEqualTo(CellSign.FLAGGED.sign);
+            assertThatCharSequence(landMineCell.toString()).isEqualTo(CellSign.FLAGGED.sign);
         }
     }
 

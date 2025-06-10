@@ -1,5 +1,7 @@
 package cleancode.minesweeper.tobe;
 
+import cleancode.minesweeper.tobe.board.cell.Cell;
+import cleancode.minesweeper.tobe.board.cell.CellSign;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -15,42 +17,42 @@ import static org.assertj.core.api.Assertions.assertThat;
 class LandMineCellTest {
     @Nested
     @DisplayName("지뢰 셀 출력 테스트")
-    class ToString{
+    class ToString {
         @Test
         @DisplayName("지뢰 셀은 열렸을 때 지뢰마크를 표시해야한다.")
         void toString1() {
             //given
-            LandMineCell landMineCell = new LandMineCell();
+            Cell landMineCell = Cell.mineCell();
             //when
             landMineCell.open();
             //then
-            assertThat(landMineCell.toString()).isEqualTo(LandMineCell.LAND_MINE_OPENED_SIGN);
+            assertThat(landMineCell.toString()).isEqualTo(CellSign.MINE_OPENED.sign);
         }
     }
 
 
     @Nested
     @DisplayName("지뢰 셀 주변 셀 열기 여부 테스트")
-    class CanAutoOpenAroundThis{
+    class CanAutoOpenAroundThis {
         @Test
         @DisplayName("지뢰 셀은 주변 셀을 열 수 없다.")
         void canAutoOpenAroundThis() {
             //given
-            LandMineCell landMineCell = new LandMineCell();
+            Cell landMineCell = Cell.mineCell();
             //when
             //then
-            assertThat(landMineCell.canAutoOpenAroundThis()).isFalse();
+            assertThat(landMineCell.cantAutoOpenAroundThis()).isTrue();
         }
     }
 
     @Nested
     @DisplayName("지뢰 셀 클리어조건 테스트")
-    class IsCleared{
+    class IsCleared {
         @Test
         @DisplayName("지뢰 셀에 깃발이 꽂히면 클리어 조건이 true다")
         void isCleared() {
             //given
-            LandMineCell landMineCell = new LandMineCell();
+            Cell landMineCell = Cell.mineCell();
             //when
             landMineCell.toggleFlag();
             //then
@@ -61,7 +63,7 @@ class LandMineCellTest {
         @DisplayName("지뢰 셀에 깃발이 꽂히지 않았다면 클리어조건이 false다.")
         void isCleared2() {
             //given
-            LandMineCell landMineCell = new LandMineCell();
+            Cell landMineCell = Cell.mineCell();
             //when
             //then
             assertThat(landMineCell.isCleared()).isFalse();
