@@ -42,7 +42,7 @@ class BoardTest {
 
         @Test
         @DisplayName("나머지는 지뢰가 아니다.")
-        void  normalCell() {
+        void normalCell() {
             //given
             BoardConfig config = MineSweeperGameLevel.BEGINNER.boardConfig;
             Board board = Board.withConfig(config);
@@ -81,7 +81,7 @@ class BoardTest {
         @DisplayName("지뢰가 아니고 주변에 지뢰가 없다면, 깃발을 제외하고 함께 연다.")
         void openNormalCell() {
             //given
-            BoardConfig config = MineSweeperGameLevel.BEGINNER.boardConfig;
+            BoardConfig config = MineSweeperGameLevel.HARD.boardConfig;
             Board board = Board.withConfig(config);
             Coordinate normalCoordinate = coordinateFinder.findCanAutoOpenAroundCellCoordinate(board);
             //when
@@ -89,7 +89,20 @@ class BoardTest {
             //then
             int aroundOpenedCount = countAroundOpenedCells(board, normalCoordinate);
             int cantOpenCellCount = countAroundCantOpenCell(board, normalCoordinate);
-            assertThat(aroundOpenedCount).isEqualTo(8-cantOpenCellCount);
+            int expectedAroundCellCount = countAroundCells(board, normalCoordinate);
+            assertThat(aroundOpenedCount + cantOpenCellCount).isEqualTo(expectedAroundCellCount);
+        }
+
+        private int countAroundCells(Board board, Coordinate coordinate) {
+            int[][] deltas = {{-1, -1}, {-1, 0}, {-1, +1}, {0, -1}, {0, +1}, {1, -1}, {1, 0}, {1, +1}};
+            int count = 0;
+            for (int[] delta : deltas) {
+                Coordinate targetCoordinates = new Coordinate(coordinate.row() + delta[0], coordinate.column() + delta[1]);
+                if (targetCoordinates.isNotMinus() && board.config.isNotOver(targetCoordinates)) {
+                    count++;
+                }
+            }
+            return count;
         }
 
         private int countAroundOpenedCells(Board board, Coordinate coordinate) {
@@ -99,7 +112,7 @@ class BoardTest {
                 Coordinate targetCoordinates = new Coordinate(coordinate.row() + delta[0], coordinate.column() + delta[1]);
                 if (targetCoordinates.isNotMinus() && board.config.isNotOver(targetCoordinates)) {
                     Cell cell = board.get(targetCoordinates);
-                    if (cell.isOpened()) count++;
+                    if (cell.isFlagged()) count++;
                 }
             }
             return count;
@@ -112,7 +125,7 @@ class BoardTest {
                 Coordinate targetCoordinates = new Coordinate(coordinate.row() + delta[0], coordinate.column() + delta[1]);
                 if (targetCoordinates.isNotMinus() && board.config.isNotOver(targetCoordinates)) {
                     Cell cell = board.get(targetCoordinates);
-                    if (cell.isLandMine() || cell.isFlagged()) count++;
+                    if (!cell.isFlagged()) count++;
                 }
             }
             return count;
