@@ -72,7 +72,7 @@ class BoardTest {
             //when
             board.open(mineCoordinate);
             //then
-            assertThat(board.isAllOpened()).isTrue();
+            assertThat(board.isAllChecked()).isTrue();
             assertThat(board.isCleared()).isFalse();
         }
 
