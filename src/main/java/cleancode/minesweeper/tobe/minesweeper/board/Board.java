@@ -52,7 +52,8 @@ public class Board {
         Cell[][] cells = new Cell[config.rowCount()][config.columnCount()];
         return new Board(cells, config);
     }
-
+//입력받는 좌표값의 검증의 경우 최대치는 Board의 크기가 저장된 Config의 역할이고
+//    Config은 Board가 들고 있으므로 Board에서 진행합니다.
     public void validateCoordinates(Coordinate coordinate) {
         if (config.isNotOver(coordinate)) return;
         throw new IllegalArgumentException("잘못된 번호를 선택하셨습니다.");
