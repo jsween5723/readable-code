@@ -1,4 +1,4 @@
-package cleancode.minesweeper.tobe.minesweeper.cell;
+package cleancode.minesweeper.tobe.minesweeper.board;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
