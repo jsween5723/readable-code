@@ -1,4 +1,4 @@
-package cleancode.minesweeper.tobe;
+package cleancode.minesweeper.tobe.board.cell;
 
 /**
  * 1. 일반 셀은 열렸을 때 주변에 지뢰개수를 표시해야한다.
@@ -7,21 +7,13 @@ package cleancode.minesweeper.tobe;
  * 4. 일반 셀의 클리어조건은 열린상태이다.
  * 5. 일반 셀은 지뢰가 아니다.
  */
-public class NormalCell extends Cell {
-    public static final String NORMAL_CELL_OPENED_SIGN = "■";
+class NormalCell extends Cell {
     private final int aroundMineCount;
 
-    private NormalCell(int aroundMineCount) {
+    NormalCell(int aroundMineCount) {
         this.aroundMineCount = aroundMineCount;
     }
 
-    static public NormalCell withAroundMineCount(int aroundMineCount) {
-        return new NormalCell(aroundMineCount);
-    }
-
-    static public NormalCell withoutAroundMine() {
-        return new NormalCell(0);
-    }
 
     @Override
     public boolean isLandMine() {
@@ -42,7 +34,7 @@ public class NormalCell extends Cell {
     public String toString() {
         if (isOpened()) {
             if (aroundMineCount == 0) {
-                return NORMAL_CELL_OPENED_SIGN;
+                return CellSign.NORMAL_OPENED.sign;
             }
             return String.valueOf(aroundMineCount);
         }

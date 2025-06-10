@@ -1,5 +1,7 @@
 package cleancode.minesweeper.tobe;
 
+import cleancode.minesweeper.tobe.board.cell.Cell;
+import cleancode.minesweeper.tobe.board.cell.CellSign;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -22,7 +24,7 @@ class NormalCellTest {
         void toString1() {
             //given
             int aroundMineCount = 2;
-            NormalCell normalCell = NormalCell.withAroundMineCount(aroundMineCount);
+            Cell normalCell = Cell.normalCellWithAroundMine(aroundMineCount);
             //when
             normalCell.open();
             //then
@@ -32,11 +34,11 @@ class NormalCellTest {
         @DisplayName("일반 셀은 주변 지뢰가 없을 경우 열린상태를 표시해야한다.")
         void toString2() {
             //given
-            NormalCell normalCell = NormalCell.withoutAroundMine();
+            Cell normalCell = Cell.normalCellWithoutAroundMine();
             //when
             normalCell.open();
             //then
-            assertThat(normalCell.toString()).isEqualTo(NormalCell.NORMAL_CELL_OPENED_SIGN);
+            assertThat(normalCell.toString()).isEqualTo(CellSign.NORMAL_OPENED.sign);
         }
     }
 
@@ -48,10 +50,10 @@ class NormalCellTest {
         @DisplayName("일반 셀의 주변 지뢰가 없고 깃발이 꽂힌 상태가 아닐 경우 주변 셀을 열 수 있다.")
         void canAutoOpenAroundThis() {
             //given
-            NormalCell normalCell = NormalCell.withoutAroundMine();
+            Cell normalCell = Cell.normalCellWithoutAroundMine();
             //when
             //then
-            assertThat(normalCell.canAutoOpenAroundThis()).isTrue();
+            assertThat(normalCell.cantAutoOpenAroundThis()).isFalse();
         }
 
         @Test
@@ -59,21 +61,21 @@ class NormalCellTest {
         void canAutoOpenAroundThis2() {
             //given
             int aroundMineCount = 1;
-            NormalCell normalCell = NormalCell.withAroundMineCount(aroundMineCount);
+            Cell normalCell = Cell.normalCellWithAroundMine(aroundMineCount);
             //when
             //then
-            assertThat(normalCell.canAutoOpenAroundThis()).isFalse();
+            assertThat(normalCell.cantAutoOpenAroundThis()).isTrue();
         }
 
         @Test
         @DisplayName("깃발이 꽂힌 상태일 경우 주변 셀을 열 수 없다.")
         void canAutoOpenAroundThis4() {
             //given
-            NormalCell normalCell = NormalCell.withoutAroundMine();
+            Cell normalCell = Cell.normalCellWithoutAroundMine();
             //when
             normalCell.toggleFlag();
             //then
-            assertThat(normalCell.canAutoOpenAroundThis()).isFalse();
+            assertThat(normalCell.cantAutoOpenAroundThis()).isTrue();
         }
     }
 
@@ -84,7 +86,7 @@ class NormalCellTest {
         @DisplayName("일반 셀이 열렸을 때 클리어조건이 true다.")
         void isCleared() {
             //given
-            NormalCell normalCell = NormalCell.withoutAroundMine();
+            Cell normalCell = Cell.normalCellWithoutAroundMine();
             //when
             normalCell.open();
             //then
@@ -95,7 +97,7 @@ class NormalCellTest {
         @DisplayName("일반 셀이 열리지 않았다면 클리어조건이 false다.")
         void isCleared2() {
             //given
-            NormalCell normalCell = NormalCell.withoutAroundMine();
+            Cell normalCell = Cell.normalCellWithoutAroundMine();
             //when
             //then
             assertThat(normalCell.isCleared()).isFalse();

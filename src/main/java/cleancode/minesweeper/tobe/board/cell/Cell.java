@@ -1,4 +1,4 @@
-package cleancode.minesweeper.tobe;
+package cleancode.minesweeper.tobe.board.cell;
 
 /**
  * 1. 셀은 모두 열 수 있어야한다.
@@ -9,10 +9,17 @@ package cleancode.minesweeper.tobe;
  * 6. 셀은 닫혀 있을 때, 깃발이 꽂혔을 때 출력할 수 있는 정보를 들고 있어야한다.
  */
 public abstract class Cell {
-    public static final String UNOPENED_SIGN = "□";
-    public static final String FLAGGED_SIGN = "⚑";
     private boolean opened = false;
     private boolean flagged = false;
+    static public Cell normalCellWithAroundMine(int aroundMineCount) {
+        return new NormalCell(aroundMineCount);
+    }
+    static public Cell normalCellWithoutAroundMine() {
+        return new NormalCell(0);
+    }
+    static public Cell mineCell() {
+        return new LandMineCell();
+    }
 
     public void open() {
         if (flagged) return;
@@ -22,10 +29,6 @@ public abstract class Cell {
     public void toggleFlag() {
         if (opened) return;
         flagged = !flagged;
-    }
-
-    public boolean canOpen() {
-        return !isOpened() && !isFlagged();
     }
 
     public boolean isOpened() {
@@ -39,15 +42,15 @@ public abstract class Cell {
         return !canAutoOpenAroundThis();
     }
 
-    abstract boolean isLandMine();
+    abstract public boolean isLandMine();
 
     abstract boolean canAutoOpenAroundThis();
 
-    abstract boolean isCleared();
+    abstract public boolean isCleared();
 
     @Override
     public String toString() {
-        if (isFlagged()) return FLAGGED_SIGN;
-        return UNOPENED_SIGN;
+        if (isFlagged()) return CellSign.FLAGGED.sign;
+        return CellSign.CLOSED.sign;
     }
 }
