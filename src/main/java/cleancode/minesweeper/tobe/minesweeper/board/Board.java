@@ -127,7 +127,7 @@ public class Board {
     }
 
     public boolean isMineOpened() {
-        return Arrays.stream(cells).flatMap(Arrays::stream).allMatch(cell -> cell.isLandMine() && cell.isOpened());
+        return Arrays.stream(cells).flatMap(Arrays::stream).anyMatch(cell -> cell.isLandMine() && cell.isOpened());
     }
 
     @Override
