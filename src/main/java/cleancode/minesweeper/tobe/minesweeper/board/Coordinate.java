@@ -11,9 +11,9 @@ public record Coordinate(int row, int column) {
         return row >= 0 && column >= 0;
     }
 
-    static public Coordinate random(BoardConfig boardConfig) {
-        int col = new Random().nextInt(boardConfig.columnCount());
-        int row = new Random().nextInt(boardConfig.rowCount());
+    static public Coordinate random(int rowCount, int columnCount) {
+        int col = new Random().nextInt(columnCount);
+        int row = new Random().nextInt(rowCount);
         return new Coordinate(row, col);
     }
 }
